@@ -1,5 +1,16 @@
 const humanScoreSpan = document.getElementById('humanScore');
 const computerScoreSpan = document.getElementById('computerScore');
+const rockBtn = document.getElementById('rock-btn');
+const paperBtn = document.getElementById('paper-btn');
+const scissorsBtn = document.getElementById('scissors-btn');
+const restartBtn = document.getElementById('restart-btn');
+
+let humanScore = 0;
+let computerScore = 0;
+
+let roundCount = 0;
+const resultsDiv = document.getElementById('results');
+const finalResultsDiv = document.getElementById('finalResults');
 
 function getComputerChoice() {
     
@@ -14,61 +25,75 @@ function getComputerChoice() {
     }
 }
 
+rockBtn.addEventListener('click', () => {
+    playRound("камень", getComputerChoice());
+});
 
+paperBtn.addEventListener('click', () => {
+    playRound("бумага", getComputerChoice());
+});
 
-/*function getHumanChoice() {
-    let choice = prompt("Камень, ножницы или бумага")
-    //choice = choice.trim().toLowerCase();
-    if (choice === "камень" || choice === "ножницы" || choice === "бумага"){
-        return choice.trim().toLowerCase()
-    } else{
-        return "Error"
-    }
-    
-}
-*/
+scissorsBtn.addEventListener('click', () => {
+    playRound("ножницы", getComputerChoice());
+});
 
+restartBtn.addEventListener('click', () => {
+    humanScore = 0;
+    computerScore = 0;
 
-let humanScore = 0
-let computerScore = 0
+    humanScoreSpan.textContent = 0;
+    computerScoreSpan.textContent = 0;
+    resultsDiv.textContent = '';
+    finalResultsDiv.textContent = '';
+    rockBtn.disabled = false;
+    paperBtn.disabled = false;
+    scissorsBtn.disabled = false;
+
+    restartBtn.style.display = 'none';
+})
 
 function playRound(humanChoice, computerChoice){
-    humanChoice = humanChoice.toLowerCase()
+    let resultMessage = "";
+
     if (humanChoice === computerChoice){
-        console.log(`Ничья! вы оба выбрали: ${humanChoice}`)
+        resultMessage = `Ничья! вы оба выбрали: ${humanChoice}`;
     } else if (
         (humanChoice === "камень" && computerChoice === "ножницы") ||
         (humanChoice === "бумага" && computerChoice === "камень") ||
         (humanChoice === "ножницы" && computerChoice === "бумага")
     ){
         humanScore++
-        console.log(`Вы выиграли! ${humanChoice} побеждает ${computerChoice}`)
+        resultMessage = `Вы выиграли! ${humanChoice} побеждает ${computerChoice}`
     } else {
         computerScore++
-        console.log(`Компьютер выиграл! ${computerChoice} побеждает ${humanChoice}`)
+        resultMessage = `Компьютер выиграл! ${computerChoice} побеждает ${humanChoice}`
     }
-    console.log(`Очки: ваши очки: ${humanScore}, очки компьютера: ${computerScore}`)
+    humanScoreSpan.textContent = humanScore;
+    computerScoreSpan.textContent = computerScore;
+    resultsDiv.textContent = resultMessage;
+
+    if (humanScore >= 5 || computerScore >= 5) {
+        displayFinalResults();
+    }
+
 }
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
 
-playRound(humanSelection, computerSelection);
+function displayFinalResults() {
+    let finalMessage = "";
+    if (humanScore >= 5) {
+        finalMessage = `Игра окончена! Вы победили со счетом ${humanScore} на ${computerScore}!`;
+    } else if (computerScore >= 5) {
+        finalMessage = `Игра окончена! Компьютер победил со счетом ${computerScore} на ${humanScore}!`;
+    }
 
-for (let round = 1; round <= 5; round++) {
-    console.log(`Раунд ${round}`);
-    const humanSelection = getHumanChoice();
-    const computerSelection = getComputerChoice();
-    playRound(humanSelection, computerSelection);
-}
+    finalResultsDiv.textContent = finalMessage;
+    finalResultsDiv.classList.add('show-final-results'); 
 
-console.log("Финальные результаты")
-if (humanScore > computerScore){
-    console.log(`Вы выиграли! ваши очки: ${humanScore} очки компьютера: ${computerScore}`)
-} else if(computerScore > humanScore) {
-    console.log(`Компьютер победил! ваши очки: ${humanScore} очки компьютера: ${computerScore}`)
-} else {
-    console.log(`Ничья! ваши очки: ${humanScore} очки компьютера: ${computerScore}`)
-}
+    
+    rockBtn.disabled = true;
+    paperBtn.disabled = true;
+    scissorsBtn.disabled = true;
 
-            
+    restartBtn.style.display = 'block';
+}           
