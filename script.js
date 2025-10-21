@@ -1,3 +1,6 @@
+const humanScoreSpan = document.getElementById('humanScore');
+const computerScoreSpan = document.getElementById('computerScore');
+
 function getComputerChoice() {
     
     let randomNumber = Math.floor(Math.random() * 3)
@@ -13,7 +16,7 @@ function getComputerChoice() {
 
 
 
-function getHumanChoice() {
+/*function getHumanChoice() {
     let choice = prompt("Камень, ножницы или бумага")
     //choice = choice.trim().toLowerCase();
     if (choice === "камень" || choice === "ножницы" || choice === "бумага"){
@@ -23,7 +26,7 @@ function getHumanChoice() {
     }
     
 }
-
+*/
 
 
 let humanScore = 0
